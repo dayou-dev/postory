@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 *.yml
-
+CLAUDE.md
 ### IntelliJ IDEA ###
 .idea
 *.iws
