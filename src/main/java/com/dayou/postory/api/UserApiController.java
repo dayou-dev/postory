@@ -1,5 +1,7 @@
 package com.dayou.postory.api;
 
+import static com.dayou.postory.global.constant.SessionConst.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dayou.postory.api.dto.request.LoginRequest;
 import com.dayou.postory.api.dto.request.SignUpRequest;
+import com.dayou.postory.api.dto.response.UserResponse;
+import com.dayou.postory.global.response.GlobalResponse;
 import com.dayou.postory.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,8 +30,8 @@ public class UserApiController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-		userService.login(request);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<GlobalResponse<UserResponse>> login(@RequestBody LoginRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(GlobalResponse.success(userService.login(request)));
 	}
 }

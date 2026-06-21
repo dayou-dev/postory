@@ -21,7 +21,34 @@ public class GlobalExceptionHandler {
 		PostNotFoundException ex) {
 		log.error("PostNotFoundException", ex);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getRequestURI(),
+			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(EmailNotFoundException.class)
+	public final ResponseEntity<ExceptionResponse> handleEmailNotFoundException(HttpServletRequest request,
+		PostNotFoundException ex) {
+		log.error("EmailNotFoundException", ex);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(EmailDuplicateException.class)
+	public final ResponseEntity<ExceptionResponse> handleEmailDuplicateException(HttpServletRequest request,
+		PostNotFoundException ex) {
+		log.error("EmailDuplicateException", ex);
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+			.body(ExceptionResponse.exception(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(MissMatchPasswordException.class)
+	public final ResponseEntity<ExceptionResponse> handleMissMatchPasswordException(HttpServletRequest request,
+		PostNotFoundException ex) {
+		log.error("MissMatchPasswordException", ex);
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+			.body(ExceptionResponse.exception(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI(),
 				LocalDateTime.now()));
 	}
 }

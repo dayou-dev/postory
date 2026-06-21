@@ -1,5 +1,6 @@
 package com.dayou.postory.global.encrytion;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import org.springframework.stereotype.Component;
@@ -10,16 +11,16 @@ public class SHA256EncryptionService {
 	public String encryptPassword(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			byte[] passBytes = password.getBytes();
+			byte[] passBytes = password.getBytes(StandardCharsets.UTF_8);
 			md.reset();
 			byte[] digested = md.digest(passBytes);
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < digested.length; i++) {
-				sb.append(Integer.toString((digested[i] & 0xff) + 0x100, 16).substring(1));
+			for (byte b : digested) {
+				sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
 			}
 			return sb.toString();
 		} catch (Exception e) {
-			return password;
+			throw new IllegalArgumentException("encrypt password error");
 		}
 	}
 }

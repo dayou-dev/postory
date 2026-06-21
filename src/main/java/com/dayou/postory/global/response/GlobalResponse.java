@@ -4,26 +4,23 @@ import lombok.Getter;
 
 @Getter
 public class GlobalResponse<T> {
-	private String status;
 	private T data;
 	private String message;
 
-	public GlobalResponse(String status, T data, String message) {
-		this.status = status;
+	public GlobalResponse(T data, String message) {
 		this.data = data;
 		this.message = message;
 	}
 
-	public GlobalResponse(String status, String message) {
-		this.status = status;
+	public GlobalResponse(String message) {
 		this.message = message;
 	}
 
-	public static <T> GlobalResponse<T> success(String status, T data) {
-		return new GlobalResponse<>(status, data, "api success");
+	public static <T> GlobalResponse<T> success(T data) {
+		return new GlobalResponse<>(data, "api success");
 	}
 
-	public static GlobalResponse<Void> success(String status) {
-		return new GlobalResponse<>(status, "api success");
+	public static GlobalResponse<Void> success() {
+		return new GlobalResponse<>("api success");
 	}
 }

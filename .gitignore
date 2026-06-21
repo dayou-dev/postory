@@ -19,6 +19,7 @@ bin/
 
 *.yml
 CLAUDE.md
+resume.md
 ### IntelliJ IDEA ###
 .idea
 *.iws
