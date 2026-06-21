@@ -1,4 +1,4 @@
-package com.dayou.postory.api.dto;
+package com.dayou.postory.api.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

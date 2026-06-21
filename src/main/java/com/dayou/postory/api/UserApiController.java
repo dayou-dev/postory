@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dayou.postory.api.dto.LoginRequest;
-import com.dayou.postory.api.dto.SignUpRequest;
-import com.dayou.postory.domain.user.User;
+import com.dayou.postory.api.dto.request.LoginRequest;
+import com.dayou.postory.api.dto.request.SignUpRequest;
 import com.dayou.postory.service.UserService;
 
 import lombok.RequiredArgsConstructor;
