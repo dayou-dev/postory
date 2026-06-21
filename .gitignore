@@ -20,6 +20,7 @@ bin/
 *.yml
 CLAUDE.md
 resume.md
+trade-off.md
 .claude
 ### IntelliJ IDEA ###
 .idea
