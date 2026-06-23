@@ -17,6 +17,7 @@ import com.dayou.postory.global.response.GlobalResponse;
 import com.dayou.postory.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,13 +28,13 @@ public class UserApiController {
 	private final HttpSession httpSession;
 
 	@PostMapping("/signup")
-	public ResponseEntity<String> signUp(@RequestBody SignUpRequest request) {
+	public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
 		userService.signUp(request);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<GlobalResponse<UserResponse>> login(@RequestBody LoginRequest request) {
+	public ResponseEntity<GlobalResponse<UserResponse>> login(@Valid @RequestBody LoginRequest request) {
 		User user = userService.login(request);
 		httpSession.setAttribute(LOGIN_USER, user.getId());
 		return ResponseEntity.status(HttpStatus.CREATED)

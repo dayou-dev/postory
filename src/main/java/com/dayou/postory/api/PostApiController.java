@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dayou.postory.api.dto.request.CommentRequest;
 import com.dayou.postory.api.dto.request.PostRequest;
 import com.dayou.postory.api.dto.response.PostResponse;
 import com.dayou.postory.global.annotation.LoginUser;
 import com.dayou.postory.global.response.GlobalResponse;
+import com.dayou.postory.service.CommentService;
+import com.dayou.postory.service.LikeService;
 import com.dayou.postory.service.PostService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,10 +30,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostApiController {
 	private final PostService postService;
+	private final CommentService commentService;
+	private final LikeService likeService;
 
 	@PostMapping("/posts")
 	public ResponseEntity<GlobalResponse<PostResponse>> publishPost(@LoginUser Long userId,
-		@RequestBody PostRequest postRequest) {
+		@Valid @RequestBody PostRequest postRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(GlobalResponse.success(postService.publishedPost(userId, postRequest)));
 	}
@@ -48,7 +54,7 @@ public class PostApiController {
 
 	@PatchMapping("/posts/{postId}")
 	public ResponseEntity<GlobalResponse<Void>> updatePost(@LoginUser Long userId, @PathVariable Long postId,
-		@RequestBody PostRequest postRequest) {
+		@Valid @RequestBody PostRequest postRequest) {
 		postService.updatePost(userId, postId, postRequest);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success());
@@ -57,6 +63,44 @@ public class PostApiController {
 	@DeleteMapping("/posts/{postId}")
 	public ResponseEntity<GlobalResponse<Void>> deletePost(@LoginUser Long userId, @PathVariable Long postId) {
 		postService.deletePost(userId, postId);
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success());
+	}
+
+	@PostMapping("/posts/{postId}/comments")
+	public ResponseEntity<GlobalResponse<Void>> createComment(@LoginUser Long userId, @PathVariable Long postId,
+		@Valid @RequestBody CommentRequest commentRequest) {
+		commentService.createComment(userId, postId, commentRequest);
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(GlobalResponse.success());
+	}
+
+	@PatchMapping("/posts/{postId}/comments/{commentId}")
+	public ResponseEntity<GlobalResponse<Void>> updateComment(@LoginUser Long userId, @PathVariable Long postId,
+		@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
+		commentService.updateComment(userId, postId, commentId, commentRequest);
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success());
+	}
+
+	@DeleteMapping("/posts/{postId}/comments/{commentId}")
+	public ResponseEntity<GlobalResponse<Void>> deleteComment(@LoginUser Long userId, @PathVariable Long postId,
+		@PathVariable Long commentId) {
+		commentService.deleteComment(userId, postId, commentId);
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success());
+	}
+
+	@PostMapping("/posts/{postId}/likes")
+	public ResponseEntity<GlobalResponse<Void>> likePost(@LoginUser Long userId, @PathVariable Long postId) {
+		likeService.likePost(userId, postId);
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success());
+	}
+
+	@DeleteMapping("/posts/{postId}/likes")
+	public ResponseEntity<GlobalResponse<Void>> unLikePost(@LoginUser Long userId, @PathVariable Long postId) {
+		likeService.unlikePost(userId, postId);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success());
 	}
