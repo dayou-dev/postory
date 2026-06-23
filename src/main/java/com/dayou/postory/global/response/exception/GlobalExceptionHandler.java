@@ -25,6 +25,15 @@ public class GlobalExceptionHandler {
 				LocalDateTime.now()));
 	}
 
+	@ExceptionHandler(UserUnauthorizedException.class)
+	public final ResponseEntity<ExceptionResponse> handleUserUnauthorizedException(HttpServletRequest request,
+		UserUnauthorizedException ex) {
+		log.error("UserUnauthorizedException", ex);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+			.body(ExceptionResponse.exception(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
 	@ExceptionHandler(PostNotFoundException.class)
 	public final ResponseEntity<ExceptionResponse> handlePostNotFoundException(HttpServletRequest request,
 		PostNotFoundException ex) {
