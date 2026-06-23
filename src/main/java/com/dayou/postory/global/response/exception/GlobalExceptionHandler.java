@@ -16,6 +16,24 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(UserNotFoundException.class)
+	public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(HttpServletRequest request,
+		UserNotFoundException ex) {
+		log.error("UserNotFoundException", ex);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(UserUnauthorizedException.class)
+	public final ResponseEntity<ExceptionResponse> handleUserUnauthorizedException(HttpServletRequest request,
+		UserUnauthorizedException ex) {
+		log.error("UserUnauthorizedException", ex);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+			.body(ExceptionResponse.exception(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
 	@ExceptionHandler(PostNotFoundException.class)
 	public final ResponseEntity<ExceptionResponse> handlePostNotFoundException(HttpServletRequest request,
 		PostNotFoundException ex) {
@@ -27,7 +45,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EmailNotFoundException.class)
 	public final ResponseEntity<ExceptionResponse> handleEmailNotFoundException(HttpServletRequest request,
-		PostNotFoundException ex) {
+		EmailNotFoundException ex) {
 		log.error("EmailNotFoundException", ex);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
@@ -36,7 +54,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EmailDuplicateException.class)
 	public final ResponseEntity<ExceptionResponse> handleEmailDuplicateException(HttpServletRequest request,
-		PostNotFoundException ex) {
+		EmailDuplicateException ex) {
 		log.error("EmailDuplicateException", ex);
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 			.body(ExceptionResponse.exception(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI(),
@@ -45,7 +63,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MissMatchPasswordException.class)
 	public final ResponseEntity<ExceptionResponse> handleMissMatchPasswordException(HttpServletRequest request,
-		PostNotFoundException ex) {
+		MissMatchPasswordException ex) {
 		log.error("MissMatchPasswordException", ex);
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 			.body(ExceptionResponse.exception(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI(),

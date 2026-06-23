@@ -1,6 +1,8 @@
 package com.dayou.postory.domain.user;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,11 +30,15 @@ public class User {
 
 	private String nickname;
 
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 	@Builder
 	public User(String username, String email, String password, String nickname) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
+		this.role = Role.NORMAL;
 	}
 }

@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final SHA256EncryptionService encryptionService;
-	private final HttpSession httpSession;
 
 	@Transactional
 	public UserResponse signUp(SignUpRequest request) {
@@ -43,14 +42,14 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserResponse login(LoginRequest request) {
+	public User login(LoginRequest request) {
 		if (!userRepository.existsByEmail(request.getEmail())) {
 			throw new EmailNotFoundException(ErrorCode.EMAIL_NOT_FOUND);
 		}
 		User user = userRepository.findByEmailAndPassword(request.getEmail(),
 				encryptionService.encryptPassword(request.getPassword()))
 			.orElseThrow(() -> new MissMatchPasswordException(ErrorCode.PASSWORD_MISS_MATCH));
-		httpSession.setAttribute(LOGIN_USER, user.getId());
-		return new UserResponse(user.getNickname());
+
+		return user;
 	}
 }
