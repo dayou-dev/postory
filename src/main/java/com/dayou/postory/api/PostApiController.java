@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dayou.postory.api.dto.request.PostRequest;
 import com.dayou.postory.api.dto.response.PostResponse;
+import com.dayou.postory.global.annotation.LoginUser;
 import com.dayou.postory.global.response.GlobalResponse;
 import com.dayou.postory.service.PostService;
 
@@ -27,7 +28,7 @@ public class PostApiController {
 	private final PostService postService;
 
 	@PostMapping("/posts")
-	public ResponseEntity<GlobalResponse<PostResponse>> publishedPost(Long userId,
+	public ResponseEntity<GlobalResponse<PostResponse>> publishPost(@LoginUser Long userId,
 		@RequestBody PostRequest postRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(GlobalResponse.success(postService.publishedPost(userId, postRequest)));
@@ -46,7 +47,7 @@ public class PostApiController {
 	}
 
 	@PatchMapping("/posts/{postId}")
-	public ResponseEntity<GlobalResponse<Void>> updatePost(Long userId, @PathVariable Long postId,
+	public ResponseEntity<GlobalResponse<Void>> updatePost(@LoginUser Long userId, @PathVariable Long postId,
 		@RequestBody PostRequest postRequest) {
 		postService.updatePost(userId, postId, postRequest);
 		return ResponseEntity.status(HttpStatus.OK)
@@ -54,7 +55,7 @@ public class PostApiController {
 	}
 
 	@DeleteMapping("/posts/{postId}")
-	public ResponseEntity<GlobalResponse<Void>> deletePost(Long userId, @PathVariable Long postId) {
+	public ResponseEntity<GlobalResponse<Void>> deletePost(@LoginUser Long userId, @PathVariable Long postId) {
 		postService.deletePost(userId, postId);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success());

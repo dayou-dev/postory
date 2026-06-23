@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dayou.postory.api.dto.request.LoginRequest;
 import com.dayou.postory.api.dto.request.SignUpRequest;
 import com.dayou.postory.api.dto.response.UserResponse;
+import com.dayou.postory.domain.user.User;
 import com.dayou.postory.global.response.GlobalResponse;
 import com.dayou.postory.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserApiController {
 	private final UserService userService;
+	private final HttpSession httpSession;
 
 	@PostMapping("/signup")
 	public ResponseEntity<String> signUp(@RequestBody SignUpRequest request) {
@@ -31,7 +34,9 @@ public class UserApiController {
 
 	@PostMapping("/login")
 	public ResponseEntity<GlobalResponse<UserResponse>> login(@RequestBody LoginRequest request) {
+		User user = userService.login(request);
+		httpSession.setAttribute(LOGIN_USER, user.getId());
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(GlobalResponse.success(userService.login(request)));
+			.body(GlobalResponse.success(new UserResponse(user.getNickname())));
 	}
 }
