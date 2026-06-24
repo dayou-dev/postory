@@ -1,4 +1,4 @@
-package com.dayou.postory.global.response.exception;
+package com.dayou.postory.global.exception;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +22,15 @@ public class GlobalExceptionHandler {
 		log.error("UserNotFoundException", ex);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(UserUnAuthenticationException.class)
+	public final ResponseEntity<ExceptionResponse> handleUserUnAuthenticationException(HttpServletRequest request,
+		UserUnAuthenticationException ex) {
+		log.error("UserUnAuthenticationException", ex);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+			.body(ExceptionResponse.exception(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getRequestURI(),
 				LocalDateTime.now()));
 	}
 

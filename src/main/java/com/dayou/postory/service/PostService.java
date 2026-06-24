@@ -9,9 +9,9 @@ import com.dayou.postory.api.dto.request.PostRequest;
 import com.dayou.postory.api.dto.response.PostResponse;
 import com.dayou.postory.domain.post.Post;
 import com.dayou.postory.domain.user.User;
-import com.dayou.postory.global.response.exception.ErrorCode;
-import com.dayou.postory.global.response.exception.PostNotFoundException;
-import com.dayou.postory.global.response.exception.UserNotFoundException;
+import com.dayou.postory.global.exception.ErrorCode;
+import com.dayou.postory.global.exception.PostNotFoundException;
+import com.dayou.postory.global.exception.UserNotFoundException;
 import com.dayou.postory.repository.PostRepository;
 import com.dayou.postory.repository.UserRepository;
 

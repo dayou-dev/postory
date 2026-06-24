@@ -8,4 +8,6 @@ import com.dayou.postory.domain.user.User;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 	Like findByUserAndPost(User user, Post post);
+
+	boolean existsByUserIdAndPostId(Long userId, Long postId);
 }
