@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
 	public final ResponseEntity<ExceptionResponse> handleUserUnauthorizedException(HttpServletRequest request,
 		UserUnauthorizedException ex) {
 		log.error("UserUnauthorizedException", ex);
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-			.body(ExceptionResponse.exception(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getRequestURI(),
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+			.body(ExceptionResponse.exception(HttpStatus.FORBIDDEN, ex.getMessage(), request.getRequestURI(),
 				LocalDateTime.now()));
 	}
 
@@ -47,6 +47,15 @@ public class GlobalExceptionHandler {
 	public final ResponseEntity<ExceptionResponse> handlePostNotFoundException(HttpServletRequest request,
 		PostNotFoundException ex) {
 		log.error("PostNotFoundException", ex);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
+				LocalDateTime.now()));
+	}
+
+	@ExceptionHandler(CommentNotFoundException.class)
+	public final ResponseEntity<ExceptionResponse> handlePostNotFoundException(HttpServletRequest request,
+		CommentNotFoundException ex) {
+		log.error("CommentNotFoundException", ex);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 			.body(ExceptionResponse.exception(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI(),
 				LocalDateTime.now()));

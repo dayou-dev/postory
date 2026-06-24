@@ -25,7 +25,7 @@ public class LikeService {
 
 	@Transactional
 	public void likePost(Long userId, Long postId) {
-		if (!likeRepository.existsByUserIdAndPostId(userId, postId)) {
+		if (likeRepository.existsByUserIdAndPostId(userId, postId)) {
 			throw new IllegalArgumentException("이미 좋아요를 한 게시글입니다.");
 		}
 		User user = userRepository.findById(userId)

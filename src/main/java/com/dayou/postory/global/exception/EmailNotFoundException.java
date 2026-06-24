@@ -8,6 +8,6 @@ public class EmailNotFoundException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return super.getMessage();
+		return errorCode.getMessage();
 	}
 }

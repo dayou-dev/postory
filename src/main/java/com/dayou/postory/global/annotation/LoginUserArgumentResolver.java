@@ -12,7 +12,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.dayou.postory.global.exception.ErrorCode;
 import com.dayou.postory.global.exception.UserUnAuthenticationException;
-import com.dayou.postory.global.exception.UserUnauthorizedException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

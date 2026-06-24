@@ -7,6 +7,7 @@ import com.dayou.postory.api.dto.request.CommentRequest;
 import com.dayou.postory.domain.comment.Comment;
 import com.dayou.postory.domain.post.Post;
 import com.dayou.postory.domain.user.User;
+import com.dayou.postory.global.exception.CommentNotFoundException;
 import com.dayou.postory.global.exception.ErrorCode;
 import com.dayou.postory.global.exception.PostNotFoundException;
 import com.dayou.postory.global.exception.UserNotFoundException;
@@ -42,7 +43,7 @@ public class CommentService {
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
-		Comment comment = commentRepository.findByIdAndPost(commentId, post);
+		Comment comment = commentRepository.findByIdAndPost(commentId, post).orElseThrow(() -> new PostNotFoundException(ErrorCode.COMMENT_NOT_FOUND));
 		if (!comment.getUser().equals(user)) {
 			throw new UserUnauthorizedException(ErrorCode.USER_UNAUTHORIZED);
 		}
@@ -56,7 +57,7 @@ public class CommentService {
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 		Post post = postRepository.findById(postId)
 			.orElseThrow(() -> new PostNotFoundException(ErrorCode.POST_NOT_FOUND));
-		Comment comment = commentRepository.findByIdAndPost(commentId, post);
+		Comment comment = commentRepository.findByIdAndPost(commentId, post).orElseThrow(() -> new CommentNotFoundException(ErrorCode.COMMENT_NOT_FOUND));
 		if (!comment.getUser().equals(user)) {
 			throw new UserUnauthorizedException(ErrorCode.USER_UNAUTHORIZED);
 		}

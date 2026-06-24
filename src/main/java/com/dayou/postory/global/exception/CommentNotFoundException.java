@@ -3,7 +3,7 @@ package com.dayou.postory.global.exception;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MissMatchPasswordException extends RuntimeException {
+public class CommentNotFoundException extends RuntimeException {
 	private final ErrorCode errorCode;
 
 	@Override
