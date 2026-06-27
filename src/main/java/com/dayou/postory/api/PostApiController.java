@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dayou.postory.api.dto.request.CommentRequest;
 import com.dayou.postory.api.dto.request.PostRequest;
+import com.dayou.postory.api.dto.response.PostDetailResponse;
 import com.dayou.postory.api.dto.response.PostResponse;
 import com.dayou.postory.global.annotation.LoginUser;
 import com.dayou.postory.global.response.GlobalResponse;
@@ -34,10 +35,11 @@ public class PostApiController {
 	private final LikeService likeService;
 
 	@PostMapping("/posts")
-	public ResponseEntity<GlobalResponse<PostResponse>> publishPost(@LoginUser Long userId,
+	public ResponseEntity<GlobalResponse<Void>> publishPost(@LoginUser Long userId,
 		@Valid @RequestBody PostRequest postRequest) {
+		postService.publishedPost(userId, postRequest);
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(GlobalResponse.success(postService.publishedPost(userId, postRequest)));
+			.body(GlobalResponse.success());
 	}
 
 	@GetMapping("/posts")
@@ -47,7 +49,7 @@ public class PostApiController {
 	}
 
 	@GetMapping("/posts/{postId}")
-	public ResponseEntity<GlobalResponse<PostResponse>> getPost(@PathVariable Long postId) {
+	public ResponseEntity<GlobalResponse<PostDetailResponse>> getPost(@PathVariable Long postId) {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success(postService.getPostById(postId)));
 	}

@@ -1,5 +1,6 @@
 package com.dayou.postory.domain.comment;
 
+import com.dayou.postory.domain.BaseTimeEntity;
 import com.dayou.postory.domain.post.Post;
 import com.dayou.postory.domain.user.User;
 
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
