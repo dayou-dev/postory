@@ -1,17 +1,21 @@
 package com.dayou.postory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dayou.postory.api.dto.request.PostRequest;
+import com.dayou.postory.api.dto.response.CommentResponse;
+import com.dayou.postory.api.dto.response.PostDetailResponse;
 import com.dayou.postory.api.dto.response.PostResponse;
+import com.dayou.postory.domain.comment.Comment;
 import com.dayou.postory.domain.post.Post;
 import com.dayou.postory.domain.user.User;
-import com.dayou.postory.global.response.exception.ErrorCode;
-import com.dayou.postory.global.response.exception.PostNotFoundException;
-import com.dayou.postory.global.response.exception.UserNotFoundException;
+import com.dayou.postory.global.exception.ErrorCode;
+import com.dayou.postory.global.exception.PostNotFoundException;
+import com.dayou.postory.global.exception.UserNotFoundException;
 import com.dayou.postory.repository.PostRepository;
 import com.dayou.postory.repository.UserRepository;
 
@@ -26,23 +30,30 @@ public class PostService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public PostResponse publishedPost(Long userId, PostRequest request) {
+	public void publishedPost(Long userId, PostRequest request) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 		Post post = Post.builder().user(user).title(request.getTitle()).content(request.getContent()).build();
 		postRepository.save(post);
-		return new PostResponse(post.getId(), post.getUser().getNickname(), post.getTitle(), post.getContent());
 	}
 
-	public PostResponse getPostById(Long postId) {
+	public PostDetailResponse getPostById(Long postId) {
 		Post post = postRepository.findById(postId).orElseThrow(() ->
 			new PostNotFoundException(ErrorCode.POST_NOT_FOUND)
 		);
-		return new PostResponse(
+		List<CommentResponse> commentResponses = new ArrayList<>();
+		List<Comment> comments = post.getComments();
+		for (Comment comment : comments) {
+			commentResponses.add(new CommentResponse(comment));
+		}
+		return new PostDetailResponse(
 			post.getId(),
 			post.getUser().getUsername(),
 			post.getTitle(),
-			post.getContent()
+			post.getContent(),
+			post.getCreatedAt(),
+			post.getUpdatedAt(),
+			commentResponses
 		);
 	}
 
@@ -52,8 +63,11 @@ public class PostService {
 			post.getId(),
 			post.getUser().getNickname(),
 			post.getTitle(),
-			post.getContent())
-		).toList();
+			post.getComments().size(),
+			post.getLikes().size(),
+			post.getCreatedAt(),
+			post.getUpdatedAt()
+		)).toList();
 	}
 
 	@Transactional

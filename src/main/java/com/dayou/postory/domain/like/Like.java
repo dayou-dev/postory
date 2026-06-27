@@ -1,11 +1,7 @@
-package com.dayou.postory.domain.post;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.dayou.postory.domain.like;
 
 import com.dayou.postory.domain.BaseTimeEntity;
-import com.dayou.postory.domain.comment.Comment;
-import com.dayou.postory.domain.like.Like;
+import com.dayou.postory.domain.post.Post;
 import com.dayou.postory.domain.user.User;
 
 import jakarta.persistence.Entity;
@@ -15,7 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,8 +19,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post extends BaseTimeEntity {
+public class Like extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,25 +31,13 @@ public class Post extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
-	private String title;
-
-	private String content;
-
-	@OneToMany(mappedBy = "post")
-	private List<Comment> comments = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post")
-	private List<Like> likes = new ArrayList<>();
+	@JoinColumn(name = "post_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Post post;
 
 	@Builder
-	public Post(User user, String title, String content) {
+	public Like(User user, Post post) {
 		this.user = user;
-		this.title = title;
-		this.content = content;
-	}
-
-	public void updatePost(String title, String content) {
-		this.title = title;
-		this.content = content;
+		this.post = post;
 	}
 }

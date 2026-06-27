@@ -1,7 +1,5 @@
 package com.dayou.postory.service;
 
-import static com.dayou.postory.global.constant.SessionConst.*;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,13 +8,12 @@ import com.dayou.postory.api.dto.request.SignUpRequest;
 import com.dayou.postory.api.dto.response.UserResponse;
 import com.dayou.postory.domain.user.User;
 import com.dayou.postory.global.encrytion.SHA256EncryptionService;
-import com.dayou.postory.global.response.exception.EmailDuplicateException;
-import com.dayou.postory.global.response.exception.EmailNotFoundException;
-import com.dayou.postory.global.response.exception.ErrorCode;
-import com.dayou.postory.global.response.exception.MissMatchPasswordException;
+import com.dayou.postory.global.exception.EmailDuplicateException;
+import com.dayou.postory.global.exception.EmailNotFoundException;
+import com.dayou.postory.global.exception.ErrorCode;
+import com.dayou.postory.global.exception.MissMatchPasswordException;
 import com.dayou.postory.repository.UserRepository;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service

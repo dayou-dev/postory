@@ -1,9 +1,9 @@
-package com.dayou.postory.global.response.exception;
+package com.dayou.postory.global.exception;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PostNotFoundException extends RuntimeException {
+public class UserUnauthorizedException extends RuntimeException {
 	private final ErrorCode errorCode;
 
 	@Override

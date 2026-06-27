@@ -1,9 +1,9 @@
-package com.dayou.postory.global.response.exception;
+package com.dayou.postory.global.exception;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UserNotFoundException extends RuntimeException {
+public class EmailDuplicateException extends RuntimeException {
 	private final ErrorCode errorCode;
 
 	@Override

@@ -1,4 +1,4 @@
-package com.dayou.postory.global.response.exception;
+package com.dayou.postory.global.exception;
 
 import lombok.RequiredArgsConstructor;
 
@@ -8,6 +8,6 @@ public class MissMatchPasswordException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return super.getMessage();
+		return errorCode.getMessage();
 	}
 }
