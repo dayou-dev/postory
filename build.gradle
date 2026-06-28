@@ -42,3 +42,19 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.named('bootRun') {
+    def scouterAgentJar = System.getenv("SCOUTER_AGENT_JAR")
+    def scouterConf = System.getenv("SCOUTER_CONF")
+
+    if (scouterAgentJar) {
+        jvmArgs += [
+                "-javaagent:${scouterAgentJar}",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-exports=java.base/sun.net=ALL-UNNAMED"
+        ]
+    }
+    if (scouterConf) {
+        systemProperty "scouter.config", scouterConf
+    }
+}

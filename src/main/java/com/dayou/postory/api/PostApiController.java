@@ -43,7 +43,7 @@ public class PostApiController {
 	}
 
 	@GetMapping("/posts")
-	public ResponseEntity<GlobalResponse<List<PostResponse>>> getPost() {
+	public ResponseEntity<GlobalResponse<List<PostResponse>>> getPosts() {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success(postService.getPosts()));
 	}
