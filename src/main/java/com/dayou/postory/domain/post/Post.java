@@ -32,11 +32,13 @@ public class Post extends BaseTimeEntity {
 
 	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
+	private User user; // 반환값중 작성자의 닉네임을 별도의 컬럼으로 저장할 수 있으나 닉네임에 변경 시 반영이 안되는 경우가 있거나 닉네임 변경을 위한 쿼리가 나가기에 연관매핑을 그대로 사용
 
 	private String title;
 
 	private String content;
+	private int commentCount; // @OneToMany 단순 조회용으로 사용하는 @OneToMany 대신 count 속성을 넣어 N+1 문제를 해소하고자 함
+	private int likesCount;// @OneToMany 단순 조회용으로 사용하는 @OneToMany 대신 count 속성을 넣어 N+1 문제를 해소하고자 함
 
 	@OneToMany(mappedBy = "post")
 	private List<Comment> comments = new ArrayList<>();
