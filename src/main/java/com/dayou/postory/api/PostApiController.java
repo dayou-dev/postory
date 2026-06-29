@@ -2,6 +2,7 @@ package com.dayou.postory.api;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dayou.postory.api.dto.request.CommentRequest;
@@ -46,6 +48,13 @@ public class PostApiController {
 	public ResponseEntity<GlobalResponse<List<PostResponse>>> getPosts() {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(GlobalResponse.success(postService.getPosts()));
+	}
+
+	@GetMapping("/improved-posts")
+	public ResponseEntity<GlobalResponse<Page<PostResponse>>> improvedGetPosts(
+		@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success(postService.improvedGetPosts(page, size)));
 	}
 
 	@GetMapping("/posts/{postId}")

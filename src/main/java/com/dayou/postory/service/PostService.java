@@ -3,6 +3,9 @@ package com.dayou.postory.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +71,18 @@ public class PostService {
 			post.getCreatedAt(),
 			post.getUpdatedAt()
 		)).toList();
+	}
+
+	public Page<PostResponse> improvedGetPosts(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Post> posts = postRepository.findAll(pageable);
+		return posts.map(post -> new PostResponse(post.getId(),
+			post.getUser().getNickname(),
+			post.getTitle(),
+			post.getComments().size(),
+			post.getLikes().size(),
+			post.getCreatedAt(),
+			post.getUpdatedAt()));
 	}
 
 	@Transactional
