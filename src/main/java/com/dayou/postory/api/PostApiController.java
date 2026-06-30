@@ -44,12 +44,6 @@ public class PostApiController {
 			.body(GlobalResponse.success());
 	}
 
-	@GetMapping("/posts")
-	public ResponseEntity<GlobalResponse<List<PostResponse>>> getPosts() {
-		return ResponseEntity.status(HttpStatus.OK)
-			.body(GlobalResponse.success(postService.getPosts()));
-	}
-
 	@GetMapping("/improved-posts")
 	public ResponseEntity<GlobalResponse<Page<PostResponse>>> improvedGetPosts(
 		@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {

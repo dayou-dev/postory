@@ -1,11 +1,6 @@
 package com.dayou.postory.domain.post;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dayou.postory.domain.BaseTimeEntity;
-import com.dayou.postory.domain.comment.Comment;
-import com.dayou.postory.domain.like.Like;
 import com.dayou.postory.domain.user.User;
 
 import jakarta.persistence.Entity;
@@ -15,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,17 +34,14 @@ public class Post extends BaseTimeEntity {
 	private int commentCount; // @OneToMany 단순 조회용으로 사용하는 @OneToMany 대신 count 속성을 넣어 N+1 문제를 해소하고자 함
 	private int likesCount;// @OneToMany 단순 조회용으로 사용하는 @OneToMany 대신 count 속성을 넣어 N+1 문제를 해소하고자 함
 
-	@OneToMany(mappedBy = "post")
-	private List<Comment> comments = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post")
-	private List<Like> likes = new ArrayList<>();
 
 	@Builder
 	public Post(User user, String title, String content) {
 		this.user = user;
 		this.title = title;
 		this.content = content;
+		this.commentCount = 0;
+		this.likesCount = 0;
 	}
 
 	public void updatePost(String title, String content) {

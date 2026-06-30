@@ -20,6 +20,7 @@ import com.dayou.postory.domain.user.User;
 import com.dayou.postory.global.exception.ErrorCode;
 import com.dayou.postory.global.exception.PostNotFoundException;
 import com.dayou.postory.global.exception.UserNotFoundException;
+import com.dayou.postory.repository.CommentRepository;
 import com.dayou.postory.repository.PostRepository;
 import com.dayou.postory.repository.UserRepository;
 
@@ -34,6 +35,7 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
+	private final CommentRepository commentRepository;
 
 	@Transactional
 	public void publishedPost(Long userId, PostRequest request) {
@@ -47,8 +49,9 @@ public class PostService {
 		Post post = postRepository.findById(postId).orElseThrow(() ->
 			new PostNotFoundException(ErrorCode.POST_NOT_FOUND)
 		);
+
 		List<CommentResponse> commentResponses = new ArrayList<>();
-		List<Comment> comments = post.getComments();
+		List<Comment> comments = commentRepository.findAllByPost(post);
 		for (Comment comment : comments) {
 			commentResponses.add(new CommentResponse(comment));
 		}
@@ -61,19 +64,6 @@ public class PostService {
 			post.getUpdatedAt(),
 			commentResponses
 		);
-	}
-
-	public List<PostResponse> getPosts() {
-		List<Post> posts = postRepository.findAll();
-		return posts.stream().map(post -> new PostResponse(
-			post.getId(),
-			post.getUser().getNickname(),
-			post.getTitle(),
-			post.getComments().size(),
-			post.getLikes().size(),
-			post.getCreatedAt(),
-			post.getUpdatedAt()
-		)).toList();
 	}
 
 	public Page<PostResponse> improvedGetPosts(int page, int size) {
