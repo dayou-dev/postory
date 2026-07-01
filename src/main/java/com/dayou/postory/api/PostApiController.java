@@ -51,6 +51,13 @@ public class PostApiController {
 			.body(GlobalResponse.success(postService.improvedGetPosts(page, size)));
 	}
 
+	@GetMapping("/posts/weekly")
+	public ResponseEntity<GlobalResponse<Page<PostResponse>>> findWeeklyTopPosts(@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(GlobalResponse.success(postService.findWeeklyTopPosts(page, size)));
+	}
+
 	@GetMapping("/posts/{postId}")
 	public ResponseEntity<GlobalResponse<PostDetailResponse>> getPost(@PathVariable Long postId) {
 		return ResponseEntity.status(HttpStatus.OK)

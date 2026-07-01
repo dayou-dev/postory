@@ -1,5 +1,6 @@
 package com.dayou.postory.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,19 @@ public class PostService {
 		log.info("\n{}", stopWatch.prettyPrint()); // Slf4j 로거를 사용할 경우
 
 		return res;
+	}
+
+	public Page<PostResponse> findWeeklyTopPosts(int page, int size) {
+		LocalDateTime now = LocalDateTime.now().minusDays(7);
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Post> posts = postRepository.findTop20ByCreatedAtAfterOrderByLikesCountDesc(now, pageable);
+		return posts.map(post -> new PostResponse(post.getId(),
+			post.getUser().getNickname(),
+			post.getTitle(),
+			post.getCommentCount(),
+			post.getLikesCount(),
+			post.getCreatedAt(),
+			post.getUpdatedAt()));
 	}
 
 	@Transactional
